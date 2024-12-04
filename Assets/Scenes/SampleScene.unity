@@ -226,7 +226,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 1.175
+  orthographic size: 1.19
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -375,9 +375,9 @@ GameObject:
   m_Component:
   - component: {fileID: 795211458}
   - component: {fileID: 795211457}
+  - component: {fileID: 795211463}
   - component: {fileID: 795211456}
   - component: {fileID: 795211460}
-  - component: {fileID: 795211461}
   - component: {fileID: 795211459}
   - component: {fileID: 795211462}
   m_Layer: 0
@@ -533,8 +533,8 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 795211461}
-        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+      - m_Target: {fileID: 795211463}
+        m_TargetAssemblyTypeName: Characters.Player.PlayerMovement, Assembly-CSharp
         m_MethodName: OnMove
         m_Mode: 0
         m_Arguments:
@@ -549,8 +549,8 @@ MonoBehaviour:
     m_ActionName: 'Player/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/XInputControllerWindows/leftStick/up,/XInputControllerWindows/leftStick/down,/XInputControllerWindows/leftStick/left,/XInputControllerWindows/leftStick/right]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 795211461}
-        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+      - m_Target: {fileID: 795211463}
+        m_TargetAssemblyTypeName: Characters.Player.PlayerMovement, Assembly-CSharp
         m_MethodName: OnRun
         m_Mode: 0
         m_Arguments:
@@ -563,25 +563,43 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 39d78397-6385-42de-941a-bed0421bc172
     m_ActionName: 'Player/Run[/XInputControllerWindows/rightShoulder,/Keyboard/leftShift]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 795211463}
+        m_TargetAssemblyTypeName: Characters.Player.PlayerMovement, Assembly-CSharp
+        m_MethodName: OnDodge
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 79e96232-b863-4487-ae6c-af83a9fa8c3d
+    m_ActionName: 'Player/Dodge[/XInputControllerWindows/buttonEast,/Keyboard/rightArrow]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 795211463}
+        m_TargetAssemblyTypeName: Characters.Player.PlayerMovement, Assembly-CSharp
+        m_MethodName: OnJump
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: f7fda55c-d5a4-4e39-90b0-6ed956c42492
+    m_ActionName: 'Player/Jump[/XInputControllerWindows/buttonSouth,/Keyboard/downArrow]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &795211461
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 795211455}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd9903252437a8746bc32facc5304104, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  walkSpeed: 0.8
-  runSpeed: 1.5
 --- !u!61 &795211462
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -628,6 +646,24 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.16007812, y: 0.40999997}
   m_EdgeRadius: 0
+--- !u!114 &795211463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 795211455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a6b8aa0cb49ca84888d0fbe89806734, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  walkSpeed: 0.8
+  runSpeed: 1.5
+  dodgeDistance: 0.3
+  dodgeHeight: 0.1
+  jumpForce: 0.5
+  jumpTotalTime: 0.3
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
