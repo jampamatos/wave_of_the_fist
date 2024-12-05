@@ -25,6 +25,9 @@ namespace Characters.Base
         [SerializeField, Tooltip("Vertical height achieved during a dodge.")]
         protected float dodgeHeight = 0.1f;
 
+        [SerializeField, Tooltip("Cooldown time before the player can dodge again.")]
+        protected float dodgeCooldown = 0.3f;
+
         [Header("Jump Settings")]
         [SerializeField, Tooltip("Force applied when the character jumps.")]
         protected float jumpForce = 1f;
@@ -32,6 +35,19 @@ namespace Characters.Base
         [SerializeField, Tooltip("Total time the character spends in the air during a jump.")]
         protected float jumpTotalTime = 0.3f;
 
+        [Header("Attack Settings")]
+        [SerializeField, Tooltip("Time to reset the combo if no follow-up attack occurs.")]
+        private float comboResetTime = 0.5f;
+        
+        [SerializeField, Tooltip("Tracks the time of the last attack.")]
+        private float lastAttackTime;
+
+        // Time since last dodge action
+        protected float lastDodgeTime = -Mathf.Infinity;
+
+        // Tracks the current stage of the combo sequence
+        protected int comboIndex = 0;
+       
         // Movement input from the player
         protected Vector2 moveInput;
 
@@ -43,6 +59,7 @@ namespace Characters.Base
         protected bool isRunning = false;
         protected bool isDodging = false;
         protected bool isGrounded = true;
+        protected bool isAttacking = false;
 
         /// <summary>
         /// Initializes component references.
@@ -68,7 +85,13 @@ namespace Characters.Base
             // Stop horizontal movement while in the air
             if (!isGrounded)
             {
-                rb.linearVelocity = Vector2.zero;
+                StopMovement();
+                return;
+            }
+
+            if (isAttacking)
+            {
+                StopMovement();
                 return;
             }
 
@@ -100,6 +123,7 @@ namespace Characters.Base
         /// <param name="direction">The horizontal input direction.</param>
         protected void FlipCharacterDirection(float direction)
         {
+            if (isAttacking) return;
             transform.localScale = new Vector3(Mathf.Sign(direction), 1, 1);
         }
 
@@ -114,7 +138,7 @@ namespace Characters.Base
             animator.SetBool("isDodging", true);
 
             // Reset velocity and calculate dodge direction
-            rb.linearVelocity = Vector2.zero;
+            StopMovement();
             Vector2 dodgeDirection = new Vector2(-Mathf.Sign(transform.localScale.x), 0).normalized;
 
             yield return null; // Wait for Animator to process state
@@ -151,7 +175,7 @@ namespace Characters.Base
         /// </summary>
         protected void EndDodge(float originalY)
         {
-            rb.linearVelocity = Vector2.zero;
+            StopMovement();
 
             // Correct any vertical displacement
             if (Mathf.Abs(transform.position.y - originalY) > 0.01f)
@@ -207,8 +231,64 @@ namespace Characters.Base
                 transform.position = new Vector3(transform.position.x, originalY, transform.position.z);
             }
 
-            rb.linearVelocity = Vector2.zero;
+            StopMovement();
             isGrounded = true;
         }
+
+        protected IEnumerator PerformAttack(string attackType)
+        {
+            if (isDodging || isRunning)
+            {
+                yield break;
+            }
+            
+            CheckAndResetCombo();
+            isAttacking = true;
+
+            // Stop movement during attack
+            StopMovement();
+
+            // Increment combo index and determine the attack trigger
+            comboIndex = (comboIndex % 3) + 1; // Loops back to 1 after reaching 3
+            string attackTrigger = attackType == "Punch"
+                ? AttackTriggers.Punch1
+                : AttackTriggers.Kick1;
+            Debug.Log(attackTrigger);
+
+            // Trigger the animation
+            animator.SetTrigger(attackTrigger);
+
+            // Wait for the animation to start and finish
+            yield return AnimationHelper.WaitForAnimationStart(animator, attackTrigger);
+            float animationLength = AnimationHelper.GetAnimationClipLength(animator, attackTrigger);
+            yield return new WaitForSeconds(animationLength);
+
+            lastAttackTime = Time.time;
+            isAttacking = false;
+        }
+
+        protected void CheckAndResetCombo()
+        {
+            if (Time.time - lastAttackTime > comboResetTime)
+            {
+                comboIndex = 0;
+            }
+        }
+
+        protected void StopMovement()
+        {
+            rb.linearVelocity = Vector2.zero;
+        }
     }
+
+    static class AttackTriggers
+    {
+        public const string Punch1 = "Punch1";
+        public const string Punch2 = "Punch2";
+        public const string Punch3 = "Punch3";
+        public const string Kick1 = "Kick1";
+        public const string Kick2 = "Kick2";
+        public const string Kick3 = "Kick3";
+    }
+
 }

@@ -376,8 +376,8 @@ GameObject:
   - component: {fileID: 795211458}
   - component: {fileID: 795211457}
   - component: {fileID: 795211463}
-  - component: {fileID: 795211456}
   - component: {fileID: 795211460}
+  - component: {fileID: 795211456}
   - component: {fileID: 795211459}
   - component: {fileID: 795211462}
   m_Layer: 0
@@ -595,6 +595,38 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: f7fda55c-d5a4-4e39-90b0-6ed956c42492
     m_ActionName: 'Player/Jump[/XInputControllerWindows/buttonSouth,/Keyboard/downArrow]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 795211463}
+        m_TargetAssemblyTypeName: Characters.Player.PlayerMovement, Assembly-CSharp
+        m_MethodName: OnPunch
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: a0a658be-bf4d-4fc5-bb34-836e86e295b7
+    m_ActionName: 'Player/Punch[/XInputControllerWindows/buttonNorth,/Keyboard/upArrow]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 795211463}
+        m_TargetAssemblyTypeName: Characters.Player.PlayerMovement, Assembly-CSharp
+        m_MethodName: OnKick
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 78c231f2-0441-4d4d-89db-12b0fb03112d
+    m_ActionName: 'Player/Kick[/XInputControllerWindows/buttonWest,/Keyboard/leftArrow]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -664,6 +696,8 @@ MonoBehaviour:
   dodgeHeight: 0.1
   jumpForce: 0.5
   jumpTotalTime: 0.3
+  comboResetTime: 0.5
+  lastAttackTime: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

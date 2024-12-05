@@ -62,6 +62,24 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Punch"",
+                    ""type"": ""Button"",
+                    ""id"": ""a0a658be-bf4d-4fc5-bb34-836e86e295b7"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Kick"",
+                    ""type"": ""Button"",
+                    ""id"": ""78c231f2-0441-4d4d-89db-12b0fb03112d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -295,6 +313,50 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1d4bf208-9037-420d-9cfb-9c22290edc63"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Punch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""38a15e22-4543-46a8-9e9d-5cfc179f1541"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Punch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""43ef93a1-2b8f-41bb-9f24-53e0c6bcaf13"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Kick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4cd58691-f31c-4b63-b305-ada657159a71"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Kick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -307,6 +369,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
         m_Player_Dodge = m_Player.FindAction("Dodge", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
+        m_Player_Punch = m_Player.FindAction("Punch", throwIfNotFound: true);
+        m_Player_Kick = m_Player.FindAction("Kick", throwIfNotFound: true);
     }
 
     ~@PlayerInput()
@@ -377,6 +441,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Run;
     private readonly InputAction m_Player_Dodge;
     private readonly InputAction m_Player_Jump;
+    private readonly InputAction m_Player_Punch;
+    private readonly InputAction m_Player_Kick;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
@@ -385,6 +451,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @Run => m_Wrapper.m_Player_Run;
         public InputAction @Dodge => m_Wrapper.m_Player_Dodge;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
+        public InputAction @Punch => m_Wrapper.m_Player_Punch;
+        public InputAction @Kick => m_Wrapper.m_Player_Kick;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -406,6 +474,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
+            @Punch.started += instance.OnPunch;
+            @Punch.performed += instance.OnPunch;
+            @Punch.canceled += instance.OnPunch;
+            @Kick.started += instance.OnKick;
+            @Kick.performed += instance.OnKick;
+            @Kick.canceled += instance.OnKick;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -422,6 +496,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
+            @Punch.started -= instance.OnPunch;
+            @Punch.performed -= instance.OnPunch;
+            @Punch.canceled -= instance.OnPunch;
+            @Kick.started -= instance.OnKick;
+            @Kick.performed -= instance.OnKick;
+            @Kick.canceled -= instance.OnKick;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -445,5 +525,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnRun(InputAction.CallbackContext context);
         void OnDodge(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnPunch(InputAction.CallbackContext context);
+        void OnKick(InputAction.CallbackContext context);
     }
 }

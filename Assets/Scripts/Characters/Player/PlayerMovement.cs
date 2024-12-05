@@ -27,6 +27,8 @@ namespace Characters.Player
             playerInput.Player.Run.canceled += OnRun;
             playerInput.Player.Dodge.performed += OnDodge;
             playerInput.Player.Jump.performed += OnJump;
+            playerInput.Player.Punch.performed += OnPunch;
+            playerInput.Player.Kick.performed += OnKick;
         }
 
         /// <summary>
@@ -84,6 +86,14 @@ namespace Characters.Player
         {
             if (context.performed && !isDodging && isGrounded)
             {
+                if (Time.time - lastDodgeTime < dodgeCooldown)
+                {
+                    return;
+                }
+
+                // Register actual Dodge time
+                lastDodgeTime = Time.time;
+                
                 // Start the dodge coroutine
                 StartCoroutine(Dodge());
             }
@@ -100,6 +110,36 @@ namespace Characters.Player
                 // Start the jump coroutine
                 StartCoroutine(Jump());
             }
+        }
+
+        /// <summary>
+        /// Handles the punch action triggered by the player.
+        /// </summary>
+        /// <param name="context">The input context indicating a punch action.</param>
+        public void OnPunch(InputAction.CallbackContext context)
+        {
+            if (context.performed && !isAttacking && isGrounded)
+            {
+                StartCoroutine(PerformAttack("Punch"));
+            }
+        }
+
+        /// <summary>
+        /// Handles the kick action triggered by the player.
+        /// </summary>
+        /// <param name="context">The input context indicating a kick action.</param>
+        public void OnKick(InputAction.CallbackContext context)
+        {
+            if (context.performed && !isAttacking && isGrounded)
+            {
+                StartCoroutine(PerformAttack("Kick"));
+            }
+        }
+
+        protected override void FixedUpdate()
+        {
+            base.FixedUpdate();
+            CheckAndResetCombo();
         }
     }
 }
